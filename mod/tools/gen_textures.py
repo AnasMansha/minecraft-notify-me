@@ -85,6 +85,64 @@ def top(on):
     px[6, 6] = ((255, 255, 255) if on else (150, 70, 66)) + (255,)  # lens highlight
     return img
 
+
+# ---------------------------------------------------------------- compact plate (10x10 px face, pixels 3..12)
+def compact_casing():
+    img = Image.new("RGBA", (16, 16)); px = img.load()
+    for y in range(16):
+        for x in range(16):
+            n = ((x * 5 + y * 11) ^ (x * y)) % 5 - 2
+            px[x, y] = (STEEL[0] + n * 2, STEEL[1] + n * 2, STEEL[2] + n * 2, 255)
+    for i in range(3, 13):  # edge of the 10x10 back face
+        px[i, 3] = px[i, 12] = px[3, i] = px[12, i] = SHADOW + (255,)
+    return img
+
+def mini_plate(on, x0, size):
+    """Draws the plate face (frame + screen + arcs + dot) into a new 16x16 image at x0..x0+size-1."""
+    img = Image.new("RGBA", (16, 16), (0, 0, 0, 0)); px = img.load()
+    x1 = x0 + size - 1
+    for y in range(x0, x1 + 1):
+        for x in range(x0, x1 + 1):
+            px[x, y] = STEEL + (255,)
+    for i in range(x0, x1 + 1):
+        px[i, x0] = px[i, x1] = px[x0, i] = px[x1, i] = EDGE + (255,)
+    for i in range(x0 + 1, x1):
+        px[i, x0 + 1] = HI + (255,); px[x0 + 1, i] = HI + (255,)
+        px[i, x1 - 1] = SHADOW + (255,); px[x1 - 1, i] = SHADOW + (255,)
+    s0, s1 = x0 + 2, x1 - 2  # screen
+    for y in range(s0, s1 + 1):
+        for x in range(s0, s1 + 1):
+            px[x, y] = (20, 24, 30, 255)
+    cx = (s0 + s1) / 2.0
+    arc = [(95, 230, 255), (40, 160, 215)] if on else [(52, 70, 82), (40, 54, 64)]
+    w = s1 - s0
+    px_arc = [(s0 + 1, s0 + 1), (s1 - 1, s0 + 1)] + [(x, s0) for x in range(s0 + 2, s1 - 1)]  # outer arc
+    for (x, y) in px_arc: px[x, y] = arc[1] + (255,)
+    for x in range(s0 + 2, s1 - 1): px[x, s0 + 2] = arc[0] + (255,)  # inner arc
+    dot = (255, 70, 50) if on else (90, 26, 26)
+    mx = int(cx)
+    for (x, y) in ((mx, s1 - 1), (mx + 1, s1 - 1), (mx, s1), (mx + 1, s1)):
+        px[x, y] = dot + (255,)
+    if on: px[mx, s1 - 1] = (255, 190, 170, 255)
+    px[x1 - 2, x1 - 1] = ((80, 255, 120) if on else (30, 70, 40)) + (255,)  # status LED
+    return img
+
+def compact_front(on):
+    base = compact_casing()
+    base.alpha_composite(mini_plate(on, 3, 10))
+    return base
+
+files_compact = {
+    "compact_casing.png": compact_casing(),
+    "compact_front.png": compact_front(False),
+    "compact_front_on.png": compact_front(True),
+}
+for name, im in files_compact.items():
+    im.save(os.path.join(OUT, name))
+ITEMS = os.path.join("src", "main", "resources", "assets", "notifyme", "textures", "items")
+os.makedirs(ITEMS, exist_ok=True)
+mini_plate(True, 2, 12).save(os.path.join(ITEMS, "notifier_compact.png"))
+
 files = {
     "notifier_side.png": side(False), "notifier_side_on.png": side(True),
     "notifier_top.png": top(False), "notifier_top_on.png": top(True),
@@ -92,8 +150,9 @@ files = {
 for name, im in files.items():
     im.save(os.path.join(OUT, name))
 # preview sheet (not shipped): 8x scale
-prev = Image.new("RGBA", (4 * 16 * 8 + 3 * 8, 16 * 8), (30, 30, 30, 255))
-for i, im in enumerate(files.values()):
+allfiles = list(files.values()) + [files_compact["compact_front.png"], files_compact["compact_front_on.png"], mini_plate(True, 2, 12)]
+prev = Image.new("RGBA", (len(allfiles) * 136, 16 * 8), (30, 30, 30, 255))
+for i, im in enumerate(allfiles):
     prev.paste(im.resize((128, 128), Image.NEAREST), (i * 136, 0))
 prev.save(sys.argv[1] if len(sys.argv) > 1 else "texture_preview.png")
 print("written", list(files))

@@ -73,6 +73,11 @@ public class BlockNotifier extends BlockContainer {
         return on ? sideOn : side;
     }
 
+    /** Metadata that shows the ON/OFF state. The full block uses meta 0/1; the compact one also stores its facing. */
+    public int metaWithState(int oldMeta, boolean active) {
+        return active ? 1 : 0;
+    }
+
     // ------------------------------------------------------------------ redstone
 
     @Override

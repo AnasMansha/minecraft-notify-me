@@ -32,7 +32,7 @@ Two parts that work together:
 
 | Part | What it is | File |
 |---|---|---|
-| **Notify Me** (mod) | Adds the **Redstone Notifier** block. Give it a redstone signal and it alerts your phone. | `notifyme-x.y.z.jar` |
+| **Notify Me** (mod) | Adds the **Redstone Notifier** block and a **Compact** version that sticks to any side of a block. Give it a redstone signal and it alerts your phone. | `notifyme-x.y.z.jar` |
 | **Redstone Pager** (Android app) | Receives the alerts, shows every notifier and whether it's ON, and rings when it matters. | `RedstonePager-x.y.z.apk` |
 
 Use it for things like:
@@ -92,6 +92,14 @@ Use it for things like:
    3. Click your phone's **+ callsign** chip.
    4. Press **Save**.
 5. Click the 🔔 **bell icon** in the block GUI to send a test alert.
+
+### Compact Redstone Notifier
+A thin plate version (10×10 px, 2 px thick) that **sticks to any side of a block** like a button: walls, floors, ceilings,
+or right onto a GT machine face next to its cover. It works exactly like the full block (same GUI, alerts and app support),
+and pops off as an item (settings kept) if the block behind it is removed.
+
+**Recipe:** put 1 Redstone Notifier in a crafting grid to get 1 Compact Redstone Notifier, and the other way round. The
+notifier keeps its name, settings and linked phones when converted.
 
 > **Even quicker:** link your phone in the block first. The app then pops up *"<world> wants to link this phone"*. Tap **Accept** and it's done.
 

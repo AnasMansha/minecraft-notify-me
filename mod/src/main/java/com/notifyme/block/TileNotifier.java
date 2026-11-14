@@ -65,9 +65,10 @@ public class TileNotifier extends TileEntity {
             lastStrength = s;
             AlertEngine.onSignal(e, s);
         }
-        int meta = e.active ? 1 : 0;
-        if (worldObj.getBlockMetadata(xCoord, yCoord, zCoord) != meta)
-            worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, meta, 2);
+        int old = worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
+        net.minecraft.block.Block b = worldObj.getBlock(xCoord, yCoord, zCoord);
+        int meta = b instanceof BlockNotifier ? ((BlockNotifier) b).metaWithState(old, e.active) : (e.active ? 1 : 0);
+        if (old != meta) worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, meta, 2);
     }
 
     @Override

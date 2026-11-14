@@ -37,6 +37,7 @@ public class NotifyMe {
 
     public static SimpleNetworkWrapper NET;
     public static BlockNotifier notifier;
+    public static BlockNotifier notifierCompact;
 
     private static NotifierRegistry registry;
     private static final Queue<Runnable> serverTasks = new ConcurrentLinkedQueue<>();
