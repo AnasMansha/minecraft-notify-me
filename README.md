@@ -81,11 +81,8 @@ Use it for things like:
 2. In the app: **Worlds → Scan LAN → Add**.
 3. In Minecraft, craft a **Redstone Notifier** and place it next to your redstone source.
 
-   ```
-    [Ender Pearl]
-   [Redstone] [Note Block] [Redstone]
-   [Iron Ingot] [Comparator] [Iron Ingot]
-   ```
+<img width="336" height="209" alt="image" src="https://github.com/user-attachments/assets/51c9c000-a307-493f-aad8-b274059cd59e" />
+
 4. **Right-click** the block:
    1. Give it a name and message.
    2. Pick a tier.
