@@ -1,0 +1,4 @@
+'' -> Royal Yeti 96
+'notifyme' -> Solid Python 43
+'hello world' -> Fuzzy Hippo 39
+'0123456789' -> Thunder Smith 52

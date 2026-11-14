@@ -1,0 +1,21 @@
+# Gradle / build output
+.gradle/
+**/.gradle/
+**/build/
+.gradle-home/
+.kotlin/
+
+# Local machine config
+app/local.properties
+*.iml
+.idea/
+.vscode/
+
+# Dev test world / runs
+mod/run/
+
+# Generated screenshot tests (selected ones live in docs/images)
+app/app/screenshots/
+
+# Release binaries are attached to GitHub Releases, not committed
+dist/
